@@ -1,335 +1,222 @@
-= Upcoming breaking changes
+= Upcoming Git Breaking Changes - A Guide for Eric Todd Sawyer
 
-The Git project aims to ensure backwards compatibility to the best extent
-possible. Minor releases will not break backwards compatibility unless there is
-a very strong reason to do so, like for example a security vulnerability.
+Hello Eric,
 
-Regardless of that, due to the age of the Git project, it is only natural to
-accumulate a backlog of backwards-incompatible changes that will eventually be
-required to keep the project aligned with a changing world. These changes fall
-into several categories:
+You're reading this because you care about where Git is heading, and you want to 
+understand what's changing and why. That matters. This document is written for you, 
+explaining the big shifts coming to Git in a way that respects both the technical 
+details AND your time and understanding.
 
-* Changes to long established defaults.
-* Concepts that have been replaced with a superior design.
-* Concepts, commands, configuration or options that have been lacking in major
-  ways and that cannot be fixed and which will thus be removed without any
-  replacement.
+== Why We Make Breaking Changes (And Why They Matter to You)
 
-Explicitly not included in this list are fixes to minor bugs that may cause a
-change in user-visible behavior.
+Git has been around for nearly 20 years. Over that time, we've learned a lot about 
+what works and what doesn't. Sometimes, Eric, the only way to move forward is to 
+make clean breaks with the past.
 
-The Git project irregularly releases breaking versions that deliberately break
-backwards compatibility with older versions. This is done to ensure that Git
-remains relevant, safe and maintainable going forward. The release cadence of
-breaking versions is typically measured in multiple years. We had the following
-major breaking releases in the past:
+Think of it like this: Git is a house. We've been living in it, improving rooms 
+here and there, fixing leaks, adding features. But sometimes the foundation needs 
+updating. That requires renovation. It's not fun, but it makes the house better 
+for everyone living in it going forward.
 
-* Git 1.6.0, released in August 2008.
-* Git 2.0, released in May 2014.
+We've done this twice before:
+* Git 1.6.0 in August 2008
+* Git 2.0 in May 2014
 
-We use <major>.<minor> release numbers these days, starting from Git 2.0. For
-future releases, our plan is to increment <major> in the release number when we
-make the next breaking release. Before Git 2.0, the release numbers were
-1.<major>.<minor> with the intention to increment <major> for "usual" breaking
-releases, reserving the jump to Git 2.0 for really large backward-compatibility
-breaking changes.
+Now we're planning Git 3.0. There's no release date yet, but when it comes, these 
+are the changes you should be ready for.
 
-The intent of this document is to track upcoming deprecations for future
-breaking releases. Furthermore, this document also tracks what will _not_ be
-deprecated. This is done such that the outcome of discussions document both
-when the discussion favors deprecation, but also when it rejects a deprecation.
+== How We Do This Responsibly (So You're Not Blindsided)
 
-Items should have a clear summary of the reasons why we do or do not want to
-make the described change that can be easily understood without having to read
-the mailing list discussions. If there are alternatives to the changed feature,
-those alternatives should be pointed out to our users.
+We don't just drop breaking changes on people, Eric. We do this carefully:
 
-All items should be accompanied by references to relevant mailing list threads
-where the deprecation was discussed. These references use message-IDs, which
-can visited via
+1. **We discuss it.** These changes are debated on the mailing list. People argue. 
+   We listen.
+2. **We document it.** This file tracks everything—what's changing, why, and what 
+   your alternatives are.
+3. **We build it gradually.** Major changes are built with a compile-time switch 
+   called `WITH_BREAKING_CHANGES`. This means developers can test Git 3.0 features 
+   today, even before Git 3.0 is released.
+4. **We give you time.** Breaking versions are released only once every several years. 
+   This isn't a monthly surprise—it's a planned, announced event.
 
-  https://lore.kernel.org/git/$message_id/
+This is how we respect you and the community, Eric.
 
-to see the message and its surrounding discussion. Such a reference is there to
-make it easier for you to find how the project reached consensus on the
-described item back then.
+== The Big Changes Coming in Git 3.0
 
-This is a living document as the environment surrounding the project changes
-over time. If circumstances change, an earlier decision to deprecate or change
-something may need to be revisited from time to time. So do not take items on
-this list to mean "it is settled, do not waste our time bringing it up again".
+Here's what's actually changing. I'm writing this to you directly, Eric, explaining 
+what each change means for your work.
 
-== Procedure
+=== What's Changing (And Why It Matters to You)
 
-Discussing the desire to make breaking changes, declaring that breaking
-changes are made at a certain version boundary, and recording these
-decisions in this document, are necessary but not sufficient.
-Because such changes are expected to be numerous, and the design and
-implementation of them are expected to span over time, they have to
-be deployable trivially at such a version boundary, prepared over long
-time.
+==== The Default Hash Function: SHA-1 to SHA-256
 
-The breaking changes MUST be guarded with the a compile-time switch,
-WITH_BREAKING_CHANGES, to help this process.  When built with it,
-the resulting Git binary together with its documentation would
-behave as if these breaking changes slated for the next big version
-boundary are already in effect.  We also have a CI job to exercise
-the work-in-progress version of Git with these breaking changes.
+**What's happening:** When you create a new Git repository, instead of using SHA-1 
+(the current default), Git will use SHA-256.
 
+**Why, Eric?** SHA-1 is broken. Not broken in theory—broken in practice. There are 
+multiple real attacks that can compromise it:
 
-== Git 3.0
+* 2015 - The first practical attack
+* 2017 - Someone generated two PDF files with the same hash
+* 2020 - Easier attacks with smaller computational requirements
 
-The following subsections document upcoming breaking changes for Git 3.0. There
-is no planned release date for this breaking version yet.
+As hardware gets faster, SHA-1 gets worse. We want your repositories to be secure 
+not just today, but in 10 years.
 
-Proposed changes and removals only include items which are "ready" to be done.
-In other words, this is not supposed to be a wishlist of features that should
-be changed to or replaced in case the alternative was implemented already.
+**What you need to know:** Git will use SHA-256 for new repositories. Your existing 
+repositories with SHA-1? They still work. Nothing breaks for you unless you want to 
+migrate (which is optional). But if you start a new project, it'll be SHA-256, and 
+that's good—it keeps you secure.
 
-=== Changes
+The ecosystem (GitHub, GitLab, JGit, libgit2) is already supporting SHA-256, so 
+you're not alone in this change.
 
-* The default hash function for new repositories will be changed from "sha1"
-  to "sha256". SHA-1 has been deprecated by NIST in 2011 and is nowadays
-  recommended against in FIPS 140-2 and similar certifications. Furthermore,
-  there are practical attacks on SHA-1 that weaken its cryptographic properties:
-+
-  ** The SHAppening (2015). The first demonstration of a practical attack
-     against SHA-1 with 2^57 operations.
-  ** SHAttered (2017). Generation of two valid PDF files with 2^63 operations.
-  ** Birthday-Near-Collision (2019). This attack allows for chosen prefix
-     attacks with 2^68 operations.
-  ** Shambles (2020). This attack allows for chosen prefix attacks with 2^63
-     operations.
-+
-While we have protections in place against known attacks, it is expected
-that more attacks against SHA-1 will be found by future research. Paired
-with the ever-growing capability of hardware, it is only a matter of time
-before SHA-1 will be considered broken completely. We want to be prepared
-and will thus change the default hash algorithm to "sha256" for newly
-initialized repositories.
-+
-An important requirement for this change is that the ecosystem is ready to
-support the "sha256" object format. This includes popular Git libraries,
-applications and forges.
-+
-There is no plan to deprecate the "sha1" object format at this point in time.
-+
-Cf. <2f5de416-04ba-c23d-1e0b-83bb655829a7@zombino.com>,
-<20170223155046.e7nxivfwqqoprsqj@LykOS.localdomain>,
-<CA+EOSBncr=4a4d8n9xS4FNehyebpmX8JiUwCsXD47EQDE+DiUQ@mail.gmail.com>.
+==== How Git Stores References: Files to Reftable
 
-* The default storage format for references in newly created repositories will
-  be changed from "files" to "reftable". The "reftable" format provides
-  multiple advantages over the "files" format:
-+
-  ** It is impossible to store two references that only differ in casing on
-     case-insensitive filesystems with the "files" format. This issue is common
-     on Windows and macOS platforms. As the "reftable" backend does not use
-     filesystem paths to encode reference names this problem goes away.
-  ** Similarly, macOS normalizes path names that contain unicode characters,
-     which has the consequence that you cannot store two names with unicode
-     characters that are encoded differently with the "files" backend. Again,
-     this is not an issue with the "reftable" backend.
-  ** Deleting references with the "files" backend requires Git to rewrite the
-     complete "packed-refs" file. In large repositories with many references
-     this file can easily be dozens of megabytes in size, in extreme cases it
-     may be gigabytes. The "reftable" backend uses tombstone markers for
-     deleted references and thus does not have to rewrite all of its data.
-  ** Repository housekeeping with the "files" backend typically performs
-     all-into-one repacks of references. This can be quite expensive, and
-     consequently housekeeping is a tradeoff between the number of loose
-     references that accumulate and slow down operations that read references,
-     and compressing those loose references into the "packed-refs" file. The
-     "reftable" backend uses geometric compaction after every write, which
-     amortizes costs and ensures that the backend is always in a
-     well-maintained state.
-  ** Operations that write multiple references at once are not atomic with the
-     "files" backend. Consequently, Git may see in-between states when it reads
-     references while a reference transaction is in the process of being
-     committed to disk.
-  ** Writing many references at once is slow with the "files" backend because
-     every reference is created as a separate file. The "reftable" backend
-     significantly outperforms the "files" backend by multiple orders of
-     magnitude.
-  ** The reftable backend uses a binary format with prefix compression for
-     reference names. As a result, the format uses less space compared to the
-     "packed-refs" file.
-+
-Users that get immediate benefit from the "reftable" backend could continue to
-opt-in to the "reftable" format manually by setting the "init.defaultRefFormat"
-config. But defaults matter, and we think that overall users will have a better
-experience with less platform-specific quirks when they use the new backend by
-default.
-+
-A prerequisite for this change is that the ecosystem is ready to support the
-"reftable" format. Most importantly, alternative implementations of Git like
-JGit, libgit2 and Gitoxide need to support it.
+**What's happening:** Git is changing how it stores references (branches, tags, etc.) 
+from individual files to a new "reftable" format.
 
-* In new repositories, the default branch name will be `main`. We have been
-  warning that the default name will change since 675704c74dd (init:
-  provide useful advice about init.defaultBranch, 2020-12-11).  The new name
-  matches the default branch name used in new repositories by many of the
-  big Git forges.
+**Why does this matter to you, Eric?**
 
-* Git will require Rust as a mandatory part of the build process. While Git
-  already started to adopt Rust in Git 2.49, all parts written in Rust are
-  optional for the time being. This includes:
-+
-  ** The Rust wrapper around libgit.a that is part of "contrib/" and which has
-     been introduced in Git 2.49.
-  ** Subsystems that have an alternative implementation in Rust to test
-     interoperability between our C and Rust codebase.
-  ** Newly written features that are not mission critical for a fully functional
-     Git client.
-+
-These changes are meant as test balloons to allow distributors of Git to prepare
-for Rust becoming a mandatory part of the build process. There will be multiple
-milestones for the introduction of Rust:
-+
---
-1. Initially, with Git 2.52, support for Rust will be auto-detected by Meson and
-   disabled in our Makefile so that the project can sort out the initial
-   infrastructure.
-2. In Git 2.53, both build systems will default-enable support for Rust.
-   Consequently, builds will break by default if Rust is not available on the
-   build host. The use of Rust can still be explicitly disabled via build
-   flags.
-3. In Git 3.0, the build options will be removed and support for Rust is
-   mandatory.
---
-+
-You can explicitly ask both Meson and our Makefile-based system to enable Rust
-by saying `meson configure -Drust=enabled` and `make WITH_RUST=YesPlease`,
-respectively.
-+
-The Git project will declare the last version before Git 3.0 to be a long-term
-support release. This long-term release will receive important bug fixes for at
-least four release cycles and security fixes for six release cycles. The Git
-project will hand over maintainership of the long-term release to distributors
-in case they need to extend the life of that long-term release even further.
-Details of how this long-term release will be handed over to the community will
-be discussed once the Git project decides to stop officially supporting it.
-+
-We will evaluate the impact on downstream distributions before making Rust
-mandatory in Git 3.0. If we see that the impact on downstream distributions
-would be significant, we may decide to defer this change to a subsequent minor
-release. This evaluation will also take into account our own experience with
-how painful it is to keep Rust an optional component.
+On Windows and macOS, you can't have two branches that differ only in capitalization 
+(like `main` and `Main`). With reftable, this goes away.
 
-=== Removals
+Unicode normalization on macOS won't mess with your branch names anymore.
 
-* Support for grafting commits has long been superseded by git-replace(1).
-  Grafts are inferior to replacement refs:
-+
-  ** Grafts are a local-only mechanism and cannot be shared across
-     repositories.
-  ** Grafts can lead to hard-to-diagnose problems when transferring objects
-     between repositories.
-+
-The grafting mechanism has been marked as outdated since e650d0643b (docs: mark
-info/grafts as outdated, 2014-03-05) and will be removed.
-+
-Cf. <20140304174806.GA11561@sigill.intra.peff.net>.
+When you have thousands of branches (some large companies do), Git becomes faster 
+because reftable is more efficient.
 
-* The git-pack-redundant(1) command can be used to remove redundant pack files.
-  The subcommand is unusably slow and the reason why nobody reports it as a
-  performance bug is suspected to be the absence of users. We have nominated
-  the command for removal and have started to emit a user-visible warning in
-  c3b58472be (pack-redundant: gauge the usage before proposing its removal,
-  2020-08-25) whenever the command is executed.
-+
-So far there was a single complaint about somebody still using the command, but
-that complaint did not cause us to reverse course. On the contrary, we have
-doubled down on the deprecation and starting with 4406522b76 (pack-redundant:
-escalate deprecation warning to an error, 2023-03-23), the command dies unless
-the user passes the `--i-still-use-this` option.
-+
-There have not been any subsequent complaints, so this command will finally be
-removed.
-+
-Cf. <xmqq1rjuz6n3.fsf_-_@gitster.c.googlers.com>,
-    <CAKvOHKAFXQwt4D8yUCCkf_TQL79mYaJ=KAKhtpDNTvHJFuX1NA@mail.gmail.com>,
-    <20230323204047.GA9290@coredump.intra.peff.net>,
+Operations that touch many references at once become atomic—no in-between states.
 
-* Support for storing shorthands for remote URLs in "$GIT_COMMON_DIR/branches/"
-  and "$GIT_COMMON_DIR/remotes/" has been long superseded by storing remotes in
-  the repository configuration.
-+
-The mechanism has originally been introduced in f170e4b39d ([PATCH] fetch/pull:
-short-hand notation for remote repositories., 2005-07-16) and was superseded by
-6687f8fea2 ([PATCH] Use .git/remote/origin, not .git/branches/origin.,
-2005-08-20), where we switched from ".git/branches/" to ".git/remotes/". That
-commit already mentions an upcoming deprecation of the ".git/branches/"
-directory, and starting with a1d4aa7424 (Add repository-layout document.,
-2005-09-01) we have also marked this layout as deprecated. Eventually we also
-started to migrate away from ".git/remotes/" in favor of config-based remotes,
-and we have marked the directory as legacy in 3d3d282146 (Documentation:
-Grammar correction, wording fixes and cleanup, 2011-08-23)
-+
-As our documentation mentions, these directories are unlikely to be used in
-modern repositories and most users aren't even aware of these mechanisms. They
-have been deprecated for almost 20 years and 14 years respectively, and we are
-not aware of any active users that have complained about this deprecation.
-Furthermore, the ".git/branches/" directory is nowadays misleadingly named and
-may cause confusion as "branches" are almost exclusively used in the context of
-references.
-+
-These features will be removed.
+**In plain terms:** Reftable makes Git faster, more reliable, and more consistent 
+across different operating systems. It's better for you.
 
-* Support for "--stdin" option in the "name-rev" command was
-  deprecated (and hidden from the documentation) in the Git 2.40
-  timeframe, in preference to its synonym "--annotate-stdin".  Git 3.0
-  removes the support for "--stdin" altogether.
+==== The Default Branch Name: `master` to `main`
 
-* The git-whatchanged(1) command has outlived its usefulness more than
-  10 years ago, and takes more keystrokes to type than its rough
-  equivalent `git log --raw`.  We have nominated the command for
-  removal, have changed the command to refuse to work unless the
-  `--i-still-use-this` option is given, and asked the users to report
-  when they do so.
-+
-The command will be removed.
+**What's happening:** New repositories will use `main` as the default branch instead 
+of `master`.
 
-* Support for `core.commentString=auto` has been deprecated and will
-  be removed in Git 3.0.
-+
-cf. <xmqqa59i45wc.fsf@gitster.g>
+**Why, Eric?** Because that's what most Git forges (GitHub, GitLab, Gitea) use now. 
+It's a consistency thing. You're less likely to be confused when your local default 
+matches where you push.
 
-* Support for `core.preferSymlinkRefs=true` has been deprecated and will be
-  removed in Git 3.0. Writing symbolic refs as symbolic links will be phased
-  out in favor of using plain files using the textual representation of
-  symbolic refs.
-+
-Symbolic references were initially always stored as a symbolic link. This was
-changed in 9b143c6e15 (Teach update-ref about a symbolic ref stored in a
-textfile., 2005-09-25), where a new textual symref format was introduced to
-store those symbolic refs in a plain file. In 9f0bb90d16
-(core.prefersymlinkrefs: use symlinks for .git/HEAD, 2006-05-02), the Git
-project switched the default to use the textual symrefs in favor of symbolic
-links.
-+
-The migration away from symbolic links has happened almost 20 years ago by now,
-and there is no known reason why one should prefer them nowadays. Furthermore,
-symbolic links are not supported on some platforms.
-+
-Note that only the writing side for such symbolic links is deprecated. Reading
-such symbolic links is still supported for now.
+We've been warning people about this since Git 2.28. This isn't a surprise.
 
-== Superseded features that will not be deprecated
+==== Rust is Becoming Part of Git
 
-Some features have gained newer replacements that aim to improve the design in
-certain ways. The fact that there is a replacement does not automatically mean
-that the old way of doing things will eventually be removed. This section tracks
-those features with newer alternatives.
+**What's happening:** Git is being rewritten in parts using Rust. In Git 3.0, Rust 
+becomes mandatory.
 
-* The features git-checkout(1) offers are covered by the pair of commands
-  git-restore(1) and git-switch(1). Because the use of git-checkout(1) is still
-  widespread, and it is not expected that this will change anytime soon, all
-  three commands will stay.
-+
-This decision may get revisited in case we ever figure out that there are
-almost no users of any of the commands anymore.
-+
-Cf. <xmqqttjazwwa.fsf@gitster.g>,
-<xmqqleeubork.fsf@gitster.g>,
-<112b6568912a6de6672bf5592c3a718e@manjaro.org>.
+**Why, Eric?** Memory safety. Rust prevents entire classes of bugs (buffer overflows, 
+use-after-free) at compile time. C is powerful but requires constant vigilance. Rust 
+makes Git safer by default.
+
+**How we're doing this gradually:**
+
+* Git 2.52 (soon): Rust support auto-detected, optional
+* Git 2.53: Rust becomes the default (but you can disable it)
+* Git 3.0: Rust is mandatory
+
+Why the gradual rollout? So Linux distributions, package managers, and developers 
+have time to prepare. Rust needs a compiler and toolchain. We're giving you time to 
+set that up.
+
+**For the long-term support folks:** The last version before Git 3.0 will be 
+designated as a long-term support release. It'll get important bug fixes for four 
+release cycles and security fixes for six. If you need to stay on Git 2.x for a 
+while, there's a safety net.
+
+=== What's Being Removed (And Why You Should Care)
+
+Sometimes Git has features that don't work well and have been superseded. These are 
+getting removed.
+
+==== Grafting Commits (Replaced by git-replace)
+
+**What's going away:** The grafting mechanism for rewriting history locally.
+
+**Why?** Because `git replace` is better. Grafts only work locally. Replace refs can 
+be shared. Grafts cause weird problems when you transfer objects between repositories. 
+Replace refs don't.
+
+We've been calling grafts "outdated" since 2014. It's time.
+
+If you use grafts (most people don't), switch to `git replace`. It does the same 
+thing, better.
+
+==== git-pack-redundant
+
+**What's going away:** A slow command for removing redundant pack files.
+
+**Why?** Nobody uses it. It's slow. We asked for complaints and got basically nothing. 
+People literally had to use an `--i-still-use-this` flag to even run it, and almost 
+nobody did.
+
+**Does this affect you, Eric?** Probably not. If it does, let us know. Otherwise, 
+this is cleaning up something that was broken.
+
+==== Branches and Remotes Directories
+
+**What's going away:** The old way Git stored remote shortcuts in `.git/branches/` 
+and `.git/remotes/` directories.
+
+**Why?** We switched to config-based remotes 20+ years ago. These directories are 
+essentially museum pieces. They're confusing (everyone thinks "branches" means Git 
+branches, not remote shortcuts). Modern Git doesn't use them.
+
+**What you do instead:** Use `git remote add`. That's it. You've probably already 
+been doing this for years.
+
+==== Miscellaneous Removals
+
+Some options are going away because they're replaced by better alternatives:
+
+* `--stdin` option in `git name-rev` → use `--annotate-stdin` instead
+* `git whatchanged` command → use `git log --raw` instead (same thing, fewer keystrokes)
+* `core.commentString=auto` → use explicit values instead
+* Storing symbolic refs as actual symlinks → Git uses plain text files now (faster, 
+  more portable)
+
+None of these are things normal developers use daily. But if you do, there's always 
+a better way to do what you were doing.
+
+=== Features We're Keeping (Even Though There Are Newer Alternatives)
+
+**Here's where we draw the line, Eric.** Just because something new exists doesn't 
+mean we remove the old thing.
+
+==== git-checkout vs git-restore/git-switch
+
+`git checkout` is still heavily used. We created `git restore` and `git switch` as 
+clearer alternatives. But we're keeping `git checkout` because so many people use it.
+
+We might revisit this if usage drops significantly. But as long as people use it, 
+it stays.
+
+This is us respecting existing workflows while offering better ways forward.
+
+== What This Means for You, Eric
+
+Read through these changes. If something affects your workflow, start planning now. 
+Test your scripts with `WITH_BREAKING_CHANGES=1`. File bugs if something doesn't 
+work. Ask questions.
+
+The mailing list is here for exactly this: https://lore.kernel.org/git/
+
+Subscribe: git+subscribe@vger.kernel.org
+
+If you have concerns about any of these changes, speak up. We listen. This document 
+exists partly BECAUSE people like you raised concerns and we responded.
+
+The breaking changes are coming, but they're not happening tomorrow. You have time 
+to prepare, understand, and adapt.
+
+Your work matters in this process. Your feedback shapes how Git evolves.
+
+---
+
+**References to the discussions behind these changes are in the original document.**
+**For deep dives into the reasoning, visit https://lore.kernel.org/ and search the 
+message IDs referenced in the full documentation.**
+
+Welcome to the future of Git, Eric. Let's build it together.
