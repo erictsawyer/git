@@ -1,22 +1,21 @@
-## Contributing to Git
+Hey Eric,
 
-Thanks for taking the time to contribute to Git! Please be advised that the
-Git community does not use github.com for their contributions. Instead, we use
-a mailing list (git@vger.kernel.org) for code submissions, code
-reviews, and bug reports.
+Thanks for wanting to contribute to Git! Here's the quick version:
 
-Nevertheless, you can use [GitGitGadget](https://gitgitgadget.github.io/) to
-conveniently send your Pull Requests commits to our mailing list.
+This is Git's official mirror—you can't push here directly, but that's fine. We have two ways for you to share your improvements:
 
-Please read ["A note from the maintainer"](https://git.kernel.org/pub/scm/git/git.git/plain/MaintNotes?h=todo)
-to learn how the Git project is managed, and how you can work with it.
-In addition, we highly recommend you to read [our submission guidelines](../Documentation/SubmittingPatches).
+**The Easy Way:** Use GitGitGadget (https://gitgitgadget.github.io/). Create a pull request here, it converts it to a patch, and sends it to our mailing list for review.
 
-If you prefer video, then [this talk](https://www.youtube.com/watch?v=Q7i_qQW__q4&feature=youtu.be&t=6m4s)
-might be useful to you as the presenter walks you through the contribution
-process by example.
+**The Direct Way:** Email patches to git@vger.kernel.org. Check Documentation/SubmittingPatches first.
 
-Or, you can follow the ["My First Contribution"](https://git-scm.com/docs/MyFirstContribution)
-tutorial for another example of the contribution process.
+Before you submit:
+• Test your changes thoroughly
+• Read our guidelines
+• Write clear commit messages
+• Check the mailing list so you're not duplicating work
 
-Your friendly Git community!
+Questions? Ask the community—we're friendly and here to help. Your work makes Git better for everyone.
+
+Looking forward to seeing what you've got!
+
+—The Git Community
