@@ -1,74 +1,391 @@
-Decision-Making Process in the Git Project
-==========================================
+= How Git Makes Decisions: A Guide for Eric Todd Sawyer
 
-Introduction
-------------
-This document describes the current decision-making process in the Git
-project. It is a descriptive rather than prescriptive doc; that is, we want to
-describe how things work in practice rather than explicitly recommending any
-particular process or changes to the current process.
+Welcome, Eric.
 
-Here we document how the project makes decisions for discussions
-(with or without patches), in scale larger than an individual patch
-series (which is fully covered by the SubmittingPatches document).
+You're about to participate in how Git shapes its future. This document explains 
+not just the mechanics of how we make decisions, but the spirit behind them—how we 
+honor each voice, how we listen deeply, and how we move forward together.
 
+This is how a global community reaches consensus. Not through hierarchy. Through 
+dialogue.
 
-Larger Discussions (with patches)
----------------------------------
-As with discussions on an individual patch series, starting a larger-scale
-discussion often begins by sending a patch or series to the list. This might
-take the form of an initial design doc, with implementation following in later
-iterations of the series (for example,
-link:https://lore.kernel.org/git/0169ce6fb9ccafc089b74ae406db0d1a8ff8ac65.1688165272.git.steadmon@google.com/[adding unit tests] or
-link:https://lore.kernel.org/git/20200420235310.94493-1-emilyshaffer@google.com/[config-based hooks]),
-or it might include a full implementation from the beginning.
-In either case, discussion progresses the same way for an individual patch series,
-until consensus is reached or the topic is dropped.
+== The Heart of the Matter
 
+Git is used by millions of people building software that affects billions of lives. 
+The decisions we make ripple outward in ways we can't always predict. That weight 
+matters. That's why our process exists.
 
-Larger Discussions (without patches)
-------------------------------------
-Occasionally, larger discussions might occur without an associated patch series.
-These may be very large-scale technical decisions that are beyond the scope of
-even a single large patch series, or they may be more open-ended,
-policy-oriented discussions (examples:
-link:https://lore.kernel.org/git/ZZ77NQkSuiRxRDwt@nand.local/[introducing Rust]
-or link:https://lore.kernel.org/git/YHofmWcIAidkvJiD@google.com/[improving submodule UX]).
-In either case, discussion progresses as described above for general patch series.
+We don't make decisions in closed rooms. We don't have a CEO who decrees what happens. 
+We have something better: a community of people spread across time zones, companies, 
+and continents, all committed to making Git better.
 
-For larger discussions without a patch series or other concrete implementation,
-it may be hard to judge when consensus has been reached, as there are not any
-official guidelines. If discussion stalls at this point, it may be helpful to
-restart discussion with an RFC patch series (such as a partial, unfinished
-implementation or proof of concept) that can be more easily debated.
+Our decision-making process is messy sometimes. It's beautiful sometimes. It's always 
+honest.
 
-When consensus is reached that it is a good idea, the original
-proposer is expected to coordinate the effort to make it happen,
-with help from others who were involved in the discussion, as
-needed.
-
-For decisions that require code changes, it is often the case that the original
-proposer will follow up with a patch series, although it is also common for
-other interested parties to provide an implementation (or parts of the
-implementation, for very large changes).
-
-For non-technical decisions such as community norms or processes, it is up to
-the community as a whole to implement and sustain agreed-upon changes.
-The project leadership committee (PLC) may help the implementation of
-policy decisions.
+Here's how it actually works, Eric.
 
 
-Other Discussion Venues
------------------------
-Occasionally decision proposals are presented off-list, e.g. at the semi-regular
-Contributors' Summit. While higher-bandwidth face-to-face discussion is often
-useful for quickly reaching consensus among attendees, generally we expect to
-summarize the discussion in notes that can later be presented on-list. For an
-example, see the thread
-link:https://lore.kernel.org/git/AC2EB721-2979-43FD-922D-C5076A57F24B@jramsay.com.au/[Notes
-from Git Contributor Summit, Los Angeles (April 5, 2020)] by James Ramsay.
 
-We prefer that "official" discussion happens on the list so that the full
-community has opportunity to engage in discussion. This also means that the
-mailing list archives contain a more-or-less complete history of project
-discussions and decisions.
+== Large-Scale Discussions With Patches
+
+Usually, when someone has an idea for Git, they don't just talk about it. They bring 
+code.
+
+This might be a complete implementation. Or it might be a design document followed by 
+code. Or a proof of concept that says "here's what I'm thinking about."
+
+**Why code matters:**
+
+Abstract discussions can go anywhere. Code grounds conversation in reality. Code says 
+"I've actually thought about this enough to implement it." Code shows what's possible.
+
+When you submit patches for a large change, Eric, something happens: the community 
+reads your code. They understand your vision through the implementation. They ask 
+questions. You respond. Others propose alternatives. Discussion deepens.
+
+This is how we've added major features:
+
+- Unit tests (started as patches, evolved through discussion)
+- Config-based hooks (started as a design, implemented iteratively)
+- Rust integration (started as proposals, tested in balloons)
+
+**The process:**
+
+1. You send patches (or a design doc with patches following)
+2. People respond on the mailing list
+3. Discussion happens—sometimes heated, always respectful
+4. Code gets refined
+5. Consensus emerges (or sometimes the idea is abandoned because something better came along)
+
+This isn't quick. It's thorough. Thorough is better than quick when the stakes are high.
+
+**How consensus feels:**
+
+You'll know consensus is reached when:
+- The major objections have been addressed
+- Most people have said "this looks good"
+- The patches reflect the community's values
+- Even people who had concerns feel heard
+
+Consensus doesn't mean everyone agrees 100%. It means the community has moved forward 
+together.
+
+
+
+== Large-Scale Discussions Without Patches
+
+Sometimes, Eric, you have an idea bigger than a patch series. Maybe it's:
+
+- A technical direction that affects Git's architecture for a decade
+- A policy question about how we conduct ourselves
+- A vision for what Git should be
+
+These discussions are harder because there's no concrete code to grab onto. Abstract 
+ideas can drift. That's why we often say: "Great idea. Now show us a proof of concept."
+
+An RFC (Request for Comments) patch series—even if it's incomplete, even if it's 
+preliminary—gives the community something real to discuss.
+
+**Examples of big discussions without initial patches:**
+
+- How to introduce Rust into Git's build process
+- How to improve the submodule user experience
+- Whether to change default branch names
+
+These started as discussions, evolved through community input, and became concrete 
+proposals.
+
+**How these discussions end:**
+
+If consensus is reached, someone volunteers to make it happen. Often it's the original 
+proposer. Sometimes it's someone else inspired by the discussion. Sometimes it's a 
+collaboration between several people.
+
+**For code changes:** Someone writes the patches. Submits them. Discussion continues. 
+The process is the same as above.
+
+**For non-technical decisions** (community norms, processes, ethical guidelines): 
+The whole community implements it together. The Project Leadership Committee might help, 
+but implementation is collective.
+
+This is how culture gets created in open source. Not from the top down. From the ground up.
+
+
+
+== A Deeper Truth About Our Process
+
+Eric, here's what makes our decision-making work:
+
+**Psychological Safety:** You can propose a radical idea. You won't be mocked. You'll be 
+engaged with seriously. Your idea might be wrong—but you won't be made wrong. Does that 
+distinction matter? Yes. Absolutely.
+
+**Embodied Listening:** When maintainers read your patches, they're not just looking at 
+code. They're reading your intent. They're understanding the problem you're solving. 
+They're imagining how this will affect users they'll never meet. That empathy is built 
+into our process.
+
+**Clarity of Purpose:** Every decision connects back to one question: "Does this make 
+Git better for the people who use it?" Not "Is this technically perfect?" Not "Does this 
+align with our existing patterns?" But "Does this serve our users?"
+
+**Soulful Disagreement:** Sometimes people disagree. Strongly. You'll see long threads 
+where intelligent people come down on different sides. This isn't dysfunction. This is 
+us taking serious decisions seriously.
+
+The measure of maturity isn't whether everyone agrees. It's whether disagreement leads to 
+deeper understanding.
+
+**Perception of the Whole:** No one person can see all the angles. The distributed nature 
+of Git's community means we have people who know Windows deeply, people who know 
+performance optimization, people who use Git in ways most of us never imagined. Our 
+decision-making process lets all those perspectives enter the conversation.
+
+When you submit patches, you're not just getting feedback on your code. You're getting 
+feedback from worldwide expertise. That's a gift.
+
+
+
+== When Discussions Happen Elsewhere
+
+Sometimes, Eric, conversations happen at Contributors' Summits. At conferences. In 
+face-to-face meetings.
+
+These conversations are valuable. Higher bandwidth. Real-time discussion. Quick consensus.
+
+But then something crucial happens: someone writes up what was discussed and posts it 
+to the mailing list. They say "Here's what we talked about. Here's what we decided. 
+What do the rest of you think?"
+
+**Why this matters:**
+
+- Not everyone can travel to summits
+- Timezones matter
+- Some of the best ideas come from people thinking alone at their keyboard
+- The full community needs to validate decisions
+
+The mailing list archives are the Git project's collective memory. Decisions need to be 
+in there, accessible forever, visible to everyone.
+
+This is how we ensure that decisions aren't made in echo chambers. This is how we keep 
+the process open.
+
+
+
+== Recognizing When Consensus Is Reached
+
+Here's a practical question, Eric: How do you know when a decision has been made?
+
+**In patches:** When maintainers start merging them into the next version. That's the 
+moment of truth. The code is in. The feature is real.
+
+**In discussions without patches:** It's fuzzier. There are no official guidelines. 
+Sometimes discussions peter out. Sometimes they restart with code. Sometimes a 
+maintainer says "This seems like consensus. Let's move forward."
+
+If you're watching and think "I can't tell if this is decided," it might be worth 
+writing up a summary and asking for confirmation. A simple email: "Here's what I think 
+we decided. Are we comfortable moving forward?"
+
+Often, that clarity is what everyone needed.
+
+
+
+== The Role of Proposers and Community
+
+When consensus is reached, Eric, the original proposer usually coordinates the 
+implementation.
+
+Why? Because you understand the vision most clearly. You've been in every conversation. 
+You know the constraints and the possibilities.
+
+But you're not alone. People from the discussions join you. People volunteer. Some submit 
+patches. Some test. Some review. Some document.
+
+**For large changes:** Sometimes the original proposer writes the code. Sometimes they 
+coordinate while others implement. Sometimes multiple people work in parallel on different 
+pieces.
+
+This is collaborative software development at scale.
+
+**For policy decisions:** The community as a whole implements it. If Git decides to adopt 
+a code of conduct, for example, someone drafts it. The community refines it. We commit to 
+it together. We enforce it together.
+
+The Project Leadership Committee can help guide policy implementation. But they're not 
+dictators. They're facilitators.
+
+
+
+== What This Process Gets Right (And What It Struggles With)
+
+**What works:**
+
+- Diverse perspectives. We get wisdom from everywhere.
+- Thorough discussion. Bad ideas get exposed. Good ideas get stronger.
+- Transparency. Every decision is documented, searchable, eternal.
+- Distributed authority. No single person can derail the project.
+- Adaptability. When circumstances change, we can revisit decisions.
+
+**What's hard:**
+
+- It's slow. Thorough discussion takes time. Some people find this frustrating.
+- It's not always clear who has authority. Is a decision made? Who decides?
+- Geographic spread means some people can't attend synchronous discussions.
+- Long threads can become unwieldy. Finding the actual decision in 200 emails is work.
+
+We live with these challenges because the alternative—faster, more centralized decision-making—
+would lose more than it would gain.
+
+
+
+== Your Role, Eric
+
+You're entering a project that has made decisions this way for nearly 20 years. Here's 
+what that means for you:
+
+**If you have an idea:**
+
+1. Talk about it. The mailing list is open.
+2. Or bring code. Show, don't just tell.
+3. Listen deeply to feedback. Not all feedback is equally weighted, but all is heard.
+4. Revise based on what you learn.
+5. Build consensus, not just consensus, but *understanding*.
+6. When consensus is reached, commit to the decision—and implement.
+
+**If you're evaluating someone else's proposal:**
+
+1. Engage seriously. They've taken time to propose this.
+2. Ask questions. Not rhetorical. Genuine questions that help you understand.
+3. Disagree if you disagree—but explain why, clearly.
+4. Look for the wisdom in proposals you don't initially support. It's often there.
+5. Change your mind if changed mind is warranted. This isn't weakness. This is learning.
+
+**If you're observing:**
+
+You're learning how distributed communities make decisions. Pay attention. This process 
+is a model that works. It's not perfect, but it's profoundly human.
+
+
+
+== The Deeper Philosophy
+
+This process works because we're committed to something bigger than being right individually. 
+We're committed to Git being right collectively.
+
+That requires:
+
+**Ego management:** Your idea might not survive intact. That's not a failure. That's evolution. 
+The community might improve it in ways you didn't anticipate.
+
+**Epistemic humility:** You don't have all the answers. Neither does anyone else. The collective 
+has wisdom you can't access alone.
+
+**Patience:** Good decisions take time. Rushing to decide is how projects make mistakes that 
+haunt them for decades.
+
+**Generosity:** When someone proposes something, assume they care about Git as much as you do. 
+They might be wrong, but they're not malicious.
+
+**Clarity of communication:** Write clearly. Think before you send. Make your point precisely. 
+Long, rambling emails don't help consensus. Focused, thoughtful ones do.
+
+
+
+== Practical Advice for Eric
+
+**Starting a discussion:**
+
+- Be specific. "Here's a problem I see..." is better than vague dissatisfaction.
+- Show your work. Even a sketch of a solution helps.
+- Acknowledge complexity. "This is hard because..." shows you've thought deeply.
+- Ask for help. "I'm stuck on the X part. Ideas?" invites collaboration.
+
+**Responding to proposals:**
+
+- Ask clarifying questions first. "Help me understand why you chose...?"
+- Point out risks, but also possibilities. "This could break Y, but it would enable Z."
+- Propose alternatives, not just critiques. "What if we...?"
+- Celebrate good ideas. "I like how you're thinking about this."
+
+**When you disagree:**
+
+- Explain why, specifically. Not "this is bad" but "this breaks X for users in Y situation."
+- Suggest improvements. Not "this won't work" but "what if we did this instead?"
+- Hold the line if you must. Sometimes you're right and the community needs to hear it.
+- But also consider: maybe you're wrong. Maybe they see something you don't.
+
+**When consensus is reached:**
+
+- Be graceful in victory. If your idea wins, thank everyone who improved it.
+- Be graceful in defeat. If your idea doesn't win, understand that the collective wisdom 
+  chose differently.
+- Implement with care. If you volunteered to coordinate the work, do it with excellence.
+
+
+
+== The Mailing List as Sacred Space
+
+The Git mailing list (git@vger.kernel.org) is not just a communication channel. It's a 
+record. It's a library. It's a town square where decisions get made.
+
+Every thread is searchable. Every decision is documented. Ten years from now, someone 
+will read these conversations and understand why Git works the way it does.
+
+Write with that in mind. Write clearly. Write thoughtfully. Write as if you're writing 
+for your future self.
+
+
+
+== Closing Words for Eric
+
+Git's decision-making process is beautiful because it's honest.
+
+We don't pretend some people are more important than they are. We don't pretend expertise 
+appears from nowhere. We don't pretend hard problems have easy answers.
+
+What we do is bring our whole selves to the conversation:
+
+- Our technical knowledge
+- Our lived experience
+- Our perspective from different parts of the world
+- Our commitment to the project's future
+- Our willingness to be changed by the discussion
+
+When you enter this process, you're entering something rare: a global community that's 
+committed to making decisions together, with transparency, with patience, with care.
+
+Your voice matters, Eric. Not because you're special, but because you're part of the 
+community.
+
+The next great feature in Git might come from your proposal. The next important policy 
+decision might come from your values. The next person who feels welcomed and safe in 
+the Git community might do so because you treated them well in a discussion.
+
+That's how projects grow. Not from the top down. From the ground up.
+
+We're glad you're here.
+
+
+
+**To participate:**
+
+- **Mailing list:** git@vger.kernel.org
+- **Subscribe:** git+subscribe@vger.kernel.org
+- **Archives:** https://lore.kernel.org/git/
+- **Contributor Summit:** Held semi-regularly in various locations
+- **Read the notes:** https://lore.kernel.org/git/ (search for "Contributor Summit")
+
+**When you're ready to propose something large:**
+
+1. Start a discussion
+2. Bring patches or a proof of concept
+3. Listen to feedback
+4. Build consensus
+5. Implement with care
+
+The community is waiting to hear what you have to say.
+
+Welcome to the decision-making process of Git.
+
+Make it count.
