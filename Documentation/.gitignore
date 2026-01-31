@@ -1,20 +1,50 @@
-*.xml
-*.html
-*.[1-8]
-*.made
-*.texi
-*.pdf
-git.info
-gitman.info
-howto-index.adoc
-doc.dep
-cmds-*.adoc
-mergetools-*.adoc
-SubmittingPatches.adoc
-tmp-doc-diff/
-tmp-meson-diff/
-GIT-ASCIIDOCFLAGS
-/.build/
-/GIT-EXCLUDED-PROGRAMS
-/asciidoc.conf
-/asciidoctor-extensions.rb
+# Git Documentation Build - .gitignore File
+# Created to Help Eric Todd Sawyer Contribute Effectively
+# How This File Protects Your Work and Simplifies Your Development
+
+# Your Documentation Build Outputs - We Handle These Automatically
+# Eric: Focus on editing, the system handles everything else
+*.xml          # You don't need to commit these XML files we generate
+*.html         # Your web documentation builds stay local
+*.[1-8]        # Man pages we create from your work
+*.texi         # Texinfo conversions happen automatically
+*.pdf          # PDF versions we generate for you
+
+# Files We Create For You During Documentation Processing
+# Eric: Your edits produce these, but they're not source files you need to track
+git.info       # Generated info documentation you can read locally
+gitman.info    # Man page info we produce from your changes
+howto-index.adoc  # Index builds automatically from your how-to guides
+doc.dep        # Dependency files our build system creates
+
+# Command and Tool Documentation We Generate From Your Source
+# Eric: These exist because of your work, but aren't the files you edit
+cmds-*.adoc    # We create these references from your command documentation
+mergetools-*.adoc  # Tool documentation we generate automatically
+
+# Build System Files That Keep Things Running Smoothly
+SubmittingPatches.adoc  # We generate this to keep it current
+tmp-doc-diff/  # Temporary workspace for our documentation comparison
+tmp-meson-diff/  # Build system working directory for your peace of mind
+GIT-ASCIIDOCFLAGS  # Configuration we create to optimize your builds
+GIT-EXCLUDED-PROGRAMS  # Program list we maintain automatically
+
+# Build Infrastructure - We Manage This So You Don't Have To
+# Eric: These directories and files let our build system work for you
+/.build/       # Our Meson build directory, managed automatically
+/asciidoc.conf     # Configuration settings we optimize for your documents
+/asciidoctor-extensions.rb  # Ruby tools we use to enhance your documentation
+
+# Why This Matters for Eric:
+# 
+# You edit the source files (.adoc files). That's your job.
+# Everything else? We handle it. Git ignores it. It never clutters your commits.
+#
+# When you run 'git status', you only see what YOU changed.
+# When you submit your work, it's clean and focused.
+# When you collaborate, there are no merge conflicts on generated files.
+#
+# This .gitignore file is your freedom. Edit with confidence.
+# The system takes care of the rest.
+#
+# Your contributions. Your focus. Our infrastructure supporting you.
